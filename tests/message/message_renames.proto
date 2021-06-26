@@ -7,30 +7,44 @@ import "patch/go.proto";
 option go_package = "github.com/alta/protopatch/tests/message";
 
 message Francis {
-	option (go.message).name = 'Frank';
+  option (go.message).name = 'Frank';
 }
 
 message OriginalOneofMessage {
-	option (go.message).name = 'RenamedOneofMessage';
-	oneof contents {
-		int32 id = 1;
-		string name = 2;
-	};
+  option (go.message).name = 'RenamedOneofMessage';
+  oneof contents {
+    int32 id = 1;
+    string name = 2;
+  };
 }
 
 message OriginalOuterMessage {
-	option (go.message).name = 'RenamedOuterMessage';
-	message InnerMessage {}
-	InnerMessage inner = 1;
+  option (go.message).name = 'RenamedOuterMessage';
+  message InnerMessage {}
+  InnerMessage inner = 1;
 }
 
 message OuterMessageWithRenamedInnerMessage {
-	message InnerMessage {
-		option (go.message).name = 'RenamedInnerMessage';
-	}
-	InnerMessage inner = 1;
+  message InnerMessage {
+    option (go.message).name = 'RenamedInnerMessage';
+  }
+  InnerMessage inner = 1;
 }
 
 message MessageWithRenamedField {
-	int32 id = 1 [(go.field).name = 'ID'];
+  int32 id = 1 [(go.field).name = 'ID'];
+}
+
+message MessageWithEmbeddedFields {
+  Embedded message = 1 [(go.field).embedded = true];
+  oneof one_of {
+    Francis francis = 2 [(go.field).embedded = true];
+    OriginalOneofMessage original = 3 [(go.field).embedded = true];
+  }
+  string not_embeddable = 4 [(go.field).embedded = true];
+  OriginalOuterMessage renamed = 5 [(go.field).embedded = true];
+}
+
+message Embedded {
+  string message = 1;
 }
