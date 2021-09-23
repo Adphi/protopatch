@@ -33,9 +33,10 @@ func TestInterfaceValidate(t *testing.T) {
 		wantErr bool
 	}{
 		{"nil", nil, false}, // Weird, but OK
-		{"unknown", &Interface{Status: StatusUnknown}, true},
-		{"up", &Interface{Status: StatusUp, Addresses: nil}, false},
-		{"down", &Interface{Status: StatusDown, Addresses: nil}, false},
+		{"unknown", &Interface{Name: "eth0", Status: StatusUnknown}, true},
+		{"up", &Interface{Name: "eth0", Status: StatusUp, Addresses: nil}, false},
+		{"down", &Interface{Name: "eth0", Status: StatusDown, Addresses: nil}, false},
+		{"invalid name", &Interface{Name: "a", Status: StatusDown, Addresses: nil}, true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -44,6 +45,7 @@ func TestInterfaceValidate(t *testing.T) {
 				t.Errorf("Validate() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
+			var _ IPAddresses = tt.i.GetAddresses()
 		})
 	}
 }

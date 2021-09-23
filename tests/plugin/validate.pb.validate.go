@@ -40,7 +40,19 @@ func (m *Interface) Validate() error {
 		return nil
 	}
 
-	// no validation rules for Name
+	if l := utf8.RuneCountInString(string(m.GetName())); l < 2 || l > 10 {
+		return InterfaceValidationError{
+			field:  "Name",
+			reason: "value length must be between 2 and 10 runes, inclusive",
+		}
+	}
+
+	if !_Interface_Name_Pattern.MatchString(string(m.GetName())) {
+		return InterfaceValidationError{
+			field:  "Name",
+			reason: "value does not match regex pattern \"[0-9a-zA-Z.-_]*\"",
+		}
+	}
 
 	if _, ok := _Interface_Status_NotInLookup[m.GetStatus()]; ok {
 		return InterfaceValidationError{
@@ -66,6 +78,32 @@ func (m *Interface) Validate() error {
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
+			}
+		}
+
+	}
+
+	if len([]string(m.GetAliases())) > 10 {
+		return InterfaceValidationError{
+			field:  "Aliases",
+			reason: "value must contain no more than 10 item(s)",
+		}
+	}
+
+	for idx, item := range m.GetAliases() {
+		_, _ = idx, item
+
+		if l := utf8.RuneCountInString(item); l < 2 || l > 10 {
+			return InterfaceValidationError{
+				field:  fmt.Sprintf("Aliases[%v]", idx),
+				reason: "value length must be between 2 and 10 runes, inclusive",
+			}
+		}
+
+		if !_Interface_Aliases_Pattern.MatchString(item) {
+			return InterfaceValidationError{
+				field:  fmt.Sprintf("Aliases[%v]", idx),
+				reason: "value does not match regex pattern \"[0-9a-zA-Z.-_]*\"",
 			}
 		}
 
@@ -128,9 +166,13 @@ var _ interface {
 	ErrorName() string
 } = InterfaceValidationError{}
 
+var _Interface_Name_Pattern = regexp.MustCompile("[0-9a-zA-Z.-_]*")
+
 var _Interface_Status_NotInLookup = map[InterfaceStatus]struct{}{
 	0: {},
 }
+
+var _Interface_Aliases_Pattern = regexp.MustCompile("[0-9a-zA-Z.-_]*")
 
 // Validate checks the field values on IPAddress with the rules defined in the
 // proto definition for this message. If any rules are violated, an error is returned.
