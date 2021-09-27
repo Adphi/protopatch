@@ -323,7 +323,7 @@ func (p *Patcher) scanField(f *protogen.Field) {
 		switch {
 		case f.Message != nil && !f.Desc.IsList():
 			log.Printf("Warning: type declared for message field: %s", f.Desc.Name())
-		case f.Oneof != nil:
+		case f.Oneof != nil && !f.Desc.HasOptionalKeyword():
 			p.Type(ident.WithChild(f.GoIdent, f.GoName), fieldType)
 			p.Type(ident.WithChild(m.GoIdent, "Get"+f.GoName), fieldType)
 		default:

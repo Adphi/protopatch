@@ -43,6 +43,11 @@ func (p *Patcher) patchTypeDef(id *ast.Ident, obj types.Object) {
 				return true
 			}
 			return false
+		case *ast.StarExpr:
+			t.X = &ast.Ident{
+				Name: fieldType,
+			}
+			return true
 		default:
 			return false
 		}
