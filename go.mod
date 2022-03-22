@@ -9,7 +9,7 @@ require (
 	github.com/lyft/protoc-gen-star v0.5.2 // indirect
 	golang.org/x/tools v0.1.6
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.1.0
-	google.golang.org/protobuf v1.27.1
+	google.golang.org/protobuf v1.28.0
 )
 
 require (
