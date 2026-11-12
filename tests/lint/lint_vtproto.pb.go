@@ -6,7 +6,7 @@ package lint
 
 import (
 	fmt "fmt"
-	sub "github.com/alta/protopatch/tests/lint/sub"
+	sub "go.linka.cloud/protopatch/tests/lint/sub"
 	protohelpers "github.com/planetscale/vtprotobuf/protohelpers"
 	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"

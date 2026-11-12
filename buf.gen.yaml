@@ -4,4 +4,4 @@ plugins:
   out: .
   opt:
   - paths=import
-  - module=github.com/alta/protopatch
+  - module=go.linka.cloud/protopatch

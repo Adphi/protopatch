@@ -7,7 +7,7 @@
 package plugins
 
 import (
-	_ "github.com/alta/protopatch/patch/gopb"
+	_ "go.linka.cloud/protopatch/patch/gopb"
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
